@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "7Ctu8gFpaaPqOxiylom5UDs4iZ7tq3gAdsMWNPRrONw=",
+  "Source": "AssignmentWeather",
+  "BasePath": "_content/AssignmentWeather",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "AssignmentWeather/wwwroot",
+      "Source": "AssignmentWeather",
+      "ContentRoot": "/mnt/internal/personal/projects/learn_dotnetcore/AssignmentWeather/wwwroot/",
+      "BasePath": "_content/AssignmentWeather",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/mnt/internal/personal/projects/learn_dotnetcore/AssignmentWeather/wwwroot/StyleSheet.css",
+      "SourceId": "AssignmentWeather",
+      "SourceType": "Discovered",
+      "ContentRoot": "/mnt/internal/personal/projects/learn_dotnetcore/AssignmentWeather/wwwroot/",
+      "BasePath": "_content/AssignmentWeather",
+      "RelativePath": "StyleSheet.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/StyleSheet.css"
+    }
+  ]
+}

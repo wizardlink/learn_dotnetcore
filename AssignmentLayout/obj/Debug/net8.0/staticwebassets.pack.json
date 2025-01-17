@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "/mnt/internal/personal/projects/learn_dotnetcore/AssignmentLayout/wwwroot/style.css",
+      "PackagePath": "staticwebassets/style.css"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.AssignmentLayout.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.AssignmentLayout.props",
+      "PackagePath": "build\\AssignmentLayout.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.AssignmentLayout.props",
+      "PackagePath": "buildMultiTargeting\\AssignmentLayout.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.AssignmentLayout.props",
+      "PackagePath": "buildTransitive\\AssignmentLayout.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

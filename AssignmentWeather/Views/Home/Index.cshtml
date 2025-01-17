@@ -1,0 +1,46 @@
+@model List<CityWeather>
+
+@{
+    string BackgroundColor(int temperature)
+    {
+        if (temperature < 44)
+        {
+            return "blue";
+        }
+        else if (temperature < 74)
+        {
+            return "green";
+        }
+        else
+        {
+            return "orange";
+        }
+    }
+}
+
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Weather</title>
+            <link href="~/StyleSheet.css" rel="stylesheet">
+        </head>
+        <body>
+            @foreach (var city in Model)
+            {
+            <div class="grid @BackgroundColor(city.TemperatureFahrenheit)">
+                <div class="details">
+                    <span class="name">@city.CityName</span>
+                    <span class="time">@city.DateAndTime.ToString("H:mm tt")</span>
+                    <a href="/details/@city.CityUniqueCode">Details</a>
+                </div>
+                <hr />
+                <div>
+                    <span>@city.TemperatureFahrenheit</span>
+                    <span class="degree">°F</span>
+                </div>
+            </div>
+            }
+        </body>
+    </html>

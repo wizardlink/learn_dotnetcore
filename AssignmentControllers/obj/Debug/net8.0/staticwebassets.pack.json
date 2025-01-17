@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "/mnt/internal/personal/projects/learn_dotnetcore/AssignmentControllers/wwwroot/document.pdf",
+      "PackagePath": "staticwebassets/document.pdf"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.AssignmentControllers.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.AssignmentControllers.props",
+      "PackagePath": "build\\AssignmentControllers.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.AssignmentControllers.props",
+      "PackagePath": "buildMultiTargeting\\AssignmentControllers.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.AssignmentControllers.props",
+      "PackagePath": "buildTransitive\\AssignmentControllers.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

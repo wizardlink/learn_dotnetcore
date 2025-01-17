@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "/mnt/internal/personal/projects/learn_dotnetcore/AssignmentWeather/wwwroot/StyleSheet.css",
+      "PackagePath": "staticwebassets/StyleSheet.css"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.AssignmentWeather.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.AssignmentWeather.props",
+      "PackagePath": "build\\AssignmentWeather.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.AssignmentWeather.props",
+      "PackagePath": "buildMultiTargeting\\AssignmentWeather.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.AssignmentWeather.props",
+      "PackagePath": "buildTransitive\\AssignmentWeather.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
