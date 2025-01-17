@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "BCYRDV8jihbg3NveLPk2hELrLDzKV1aPWG2zlfWdvk8=",
+  "Source": "AssignmentViewComponents",
+  "BasePath": "_content/AssignmentViewComponents",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "AssignmentViewComponents/wwwroot",
+      "Source": "AssignmentViewComponents",
+      "ContentRoot": "/mnt/internal/personal/projects/learn_dotnetcore/AssignmentViewComponents/wwwroot/",
+      "BasePath": "_content/AssignmentViewComponents",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/mnt/internal/personal/projects/learn_dotnetcore/AssignmentViewComponents/wwwroot/style.css",
+      "SourceId": "AssignmentViewComponents",
+      "SourceType": "Discovered",
+      "ContentRoot": "/mnt/internal/personal/projects/learn_dotnetcore/AssignmentViewComponents/wwwroot/",
+      "BasePath": "_content/AssignmentViewComponents",
+      "RelativePath": "style.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/style.css"
+    }
+  ]
+}
