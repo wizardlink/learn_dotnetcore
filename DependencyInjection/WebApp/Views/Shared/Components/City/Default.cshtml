@@ -1,0 +1,41 @@
+@model CityWeather
+
+@{
+    string BackgroundColor(int temperature)
+    {
+        if (temperature < 44)
+        {
+            return "blue";
+        }
+        else if (temperature < 74)
+        {
+            return "green";
+        }
+        else
+        {
+            return "orange";
+        }
+    }
+}
+
+<div class="grid @BackgroundColor(Model.TemperatureFahrenheit)">
+    <div class="details">
+        <span class="name">@Model.CityName</span>
+        <span class="time">@Model.DateAndTime.ToString("H:mm tt")</span>
+        <a id="details" href="/details/@Model.CityUniqueCode">Details</a>
+        <a id="goback" href="/">Go back</a>
+    </div>
+    <hr />
+    <div>
+        <span>@Model.TemperatureFahrenheit</span>
+        <span class="degree">°F</span>
+    </div>
+</div>
+
+<script>
+    if (location.href.includes("details")) {
+        document.querySelectorAll("#details").forEach(i => i.style.display = "none");
+    } else {
+        document.querySelectorAll("#goback").forEach(i => i.style.display = "none");
+    }
+</script>

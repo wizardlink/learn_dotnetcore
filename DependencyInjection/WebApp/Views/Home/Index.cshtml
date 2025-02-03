@@ -1,0 +1,8 @@
+@model List<CityWeather>
+
+@{
+    foreach (var city in Model)
+    {
+        <vc:city weather="city"></vc:city>
+    }
+}

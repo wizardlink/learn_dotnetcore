@@ -1,0 +1,68 @@
+body {
+    display: flex;
+    justify-content: center;
+
+    height: 100dvh;
+
+    background-color: #333333;
+    color: #FFF;
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: x-large;
+}
+
+a {
+    color: aquamarine;
+}
+
+hr {
+    min-height: 50px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 5fr 1fr 3fr;
+
+    align-self: center;
+    padding: 10px 40px;
+    margin: 0 10px;
+}
+
+.details {
+    display: flex;
+    flex-flow: column;
+}
+
+.container {
+    display: flex;
+    flex-flow: column;
+
+    align-self: center;
+}
+
+.container-row  {
+    display: flex;
+    flex-flow: row;
+
+    align-self: center;
+    text-align: center;
+}
+
+.backButton {
+    align-self: center;
+}
+
+.blue {
+    border-radius: 30px;
+    border: solid #4682b4;
+}
+
+.green {
+    border-radius: 30px;
+    border: solid #77ab59;
+}
+
+.orange {
+    border-radius: 30px;
+    border: solid #ff9a00;
+}
