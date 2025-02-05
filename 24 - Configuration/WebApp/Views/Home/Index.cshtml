@@ -1,0 +1,16 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Home</h1>
+
+<ul>
+    <li><a href="@ViewBag.Facebook">Facebook</a></li>
+    <environment exclude="Development">
+        <li><a href="@ViewBag.Instagram">Instagram</a></li>
+    </environment>
+    <li><a href="@ViewBag.Twitter">Twitter</a></li>
+    <li><a href="@ViewBag.Youtube">Youtube</a></li>
+</ul>
