@@ -1,3 +1,4 @@
+# Ignore direnv files
 .direnv
 
 *.swp
@@ -37,4 +38,3 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
-
