@@ -1,0 +1,25 @@
+:q
+q
+file dotnet
+run
+q
+file dotnet
+set-args CRUDExample.dll
+:?
+:help
+help
+help set
+set args CRUDExample.dll
+run
+file dotnet
+set args ./
+run
+file dotnet
+set args run
+run
+:q
+q
+file dotnet; run
+help
+:q
+q
