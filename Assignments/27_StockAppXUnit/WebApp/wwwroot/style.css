@@ -1,0 +1,18 @@
+#finnhub-token {
+    display: none;
+}
+
+.grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.dollar-sign {
+    color: #808080;
+    margin-right: 5px;
+}
+
+.stock-name,
+.stock-symbol {
+    color: aquamarine;
+}

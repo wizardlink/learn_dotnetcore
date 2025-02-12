@@ -1,0 +1,18 @@
+@model StockTrade
+
+<span id="finnhub-token">@ViewBag.FinnhubToken</span>
+
+<div class="grid">
+    <div>
+        <span class="stock-name">@Model.StockName</span>
+        <span class="stock-symbol">@Model.StockSymbol</span>
+    </div>
+
+    <div>
+        <span class="dollar-sign">$</span> <span id="stock-price">@Model.Price</span>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/scripts/finnhub-socket.js"></script>
+}
