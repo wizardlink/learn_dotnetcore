@@ -1,0 +1,80 @@
+using Microsoft.AspNetCore.Mvc;
+using ServiceContracts;
+using ServiceContracts.DTO;
+using ServiceContracts.Enums;
+
+namespace CRUDExample.Controllers;
+
+[Route("persons")]
+public class PersonsController : Controller
+{
+    private readonly IPersonService _personService;
+    private readonly ICountriesService _countriesService;
+
+    public PersonsController(IPersonService personService, ICountriesService countriesService)
+    {
+        _personService = personService;
+        _countriesService = countriesService;
+    }
+
+    [Route("index")]
+    [Route("/")]
+    public ActionResult Index(
+        [FromQuery] string? searchBy,
+        [FromQuery] string? searchString,
+        [FromQuery] string sortBy = nameof(PersonResponse.PersonName),
+        [FromQuery] SortOrderOptions sortOrder = SortOrderOptions.ASC
+    )
+    {
+        #region Search
+        ViewBag.SearchFields = new Dictionary<string, string>()
+        {
+            { nameof(PersonResponse.PersonName), "PersonName" },
+            { nameof(PersonResponse.Email), "Email" },
+            { nameof(PersonResponse.DateOfBirth), "Date of Birth" },
+            { nameof(PersonResponse.Gender), "Gender" },
+            { nameof(PersonResponse.CountryID), "Country" },
+            { nameof(PersonResponse.Address), "Address" },
+        };
+
+        var persons = _personService.GetFilteredPersons(searchBy, searchString);
+        #endregion
+
+        #region Sort
+        persons = _personService.GetSortedPersons(persons, sortBy, sortOrder);
+        #endregion
+
+        // Preserve inputs
+        ViewBag.CurrentSearchBy = searchBy;
+        ViewBag.CurrentSearchString = searchString;
+        ViewBag.CurrentSortBy = sortBy;
+        ViewBag.CurrentSortOrder = sortOrder;
+
+        return View(persons);
+    }
+
+    [Route("create")]
+    [HttpGet]
+    public ActionResult Create()
+    {
+        ViewBag.Countries = _countriesService.GetAllCountries();
+
+        return View();
+    }
+
+    [Route("create")]
+    [HttpPost]
+    public ActionResult Create(PersonAddRequest personAddRequest)
+    {
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Countries = _countriesService.GetAllCountries();
+            ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).SelectMany(e => e.ErrorMessage).ToList();
+            return View();
+        }
+
+        _personService.AddPerson(personAddRequest);
+
+        return RedirectToAction("Index", "Persons");
+    }
+}

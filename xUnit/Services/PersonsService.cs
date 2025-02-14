@@ -12,10 +12,73 @@ public class PersonsService : IPersonService
     private readonly List<Person> _personList;
     private readonly ICountriesService _countriesService;
 
-    public PersonsService()
+    public PersonsService(bool initialize = true)
     {
         _personList = new List<Person>();
         _countriesService = new CountriesService();
+
+        if (initialize)
+        {
+            _personList.AddRange(
+                [
+                    new Person
+                    {
+                        PersonID = Guid.Parse("9E5F189A-D9A3-4A93-811F-4CEB06672A6C"),
+                        PersonName = "Aguste",
+                        Email = "alledy@hello.com",
+                        DateOfBirth = DateTime.Parse("1993-01-02"),
+                        Gender = "Male",
+                        Address = "Novick Terrace",
+                        ReceiveNewsLetters = false,
+                        CountryID = Guid.Parse("CCBE8E62-6081-4072-B36D-FA7987D50000"),
+                    },
+                    new Person
+                    {
+                        PersonID = Guid.Parse("0C4D0EF3-99A3-4FF7-97F4-E9E34296FA4C"),
+                        PersonName = "Jasmina",
+                        Email = "jasmina@hello.com",
+                        DateOfBirth = DateTime.Parse("1991-06-24"),
+                        Gender = "Female",
+                        Address = "Fieldstone Lane",
+                        ReceiveNewsLetters = false,
+                        CountryID = Guid.Parse("CCBE8E62-6081-4072-B36D-FA7987D50000"),
+                    },
+                    new Person
+                    {
+                        PersonID = Guid.Parse("E983E477-1CAE-4567-8842-7C1F2928D6E2"),
+                        PersonName = "Kendall",
+                        Email = "kendall@hello.com",
+                        DateOfBirth = DateTime.Parse("1993-08-13"),
+                        Gender = "Male",
+                        Address = "Pawling Alley",
+                        ReceiveNewsLetters = false,
+                        CountryID = Guid.Parse("CCBE8E62-6081-4072-B36D-FA7987D50000"),
+                    },
+                    new Person
+                    {
+                        PersonID = Guid.Parse("FFDFD955-98B5-4F04-A312-0F36A4C9B7C7"),
+                        PersonName = "Kilian",
+                        Email = "kilian@hello.com",
+                        DateOfBirth = DateTime.Parse("1991-06-17"),
+                        Gender = "Male",
+                        Address = "Buhler Junction",
+                        ReceiveNewsLetters = true,
+                        CountryID = Guid.Parse("CCBE8E62-6081-4072-B36D-FA7987D50000"),
+                    },
+                    new Person
+                    {
+                        PersonID = Guid.Parse("CCBE8E62-6081-4072-B36D-FA7987D50000"),
+                        PersonName = "Dulcinea",
+                        Email = "dbus@hello.com",
+                        DateOfBirth = DateTime.Parse("1996-09-02"),
+                        Gender = "Female",
+                        Address = "Sundown Point",
+                        ReceiveNewsLetters = false,
+                        CountryID = Guid.Parse("CCBE8E62-6081-4072-B36D-FA7987D50000"),
+                    },
+                ]
+            );
+        }
     }
 
     private PersonResponse ConvertPersonToPersonResponse(Person person)
@@ -61,7 +124,7 @@ public class PersonsService : IPersonService
         return person.ToPersonResponse();
     }
 
-    public List<PersonResponse> GetFilteredPersons(string searchBy, object? searchValue)
+    public List<PersonResponse> GetFilteredPersons(string? searchBy, object? searchValue)
     {
         List<PersonResponse> allPersons = GetAllPersons();
 
@@ -73,20 +136,31 @@ public class PersonsService : IPersonService
         if (propertyToSearch == null)
             throw new ArgumentException("searchBy does not matches any fields from type PersonResponse");
 
-        return allPersons
-            .Where(person =>
+        return
+        [
+            .. allPersons.Where(person =>
             {
                 var fieldValue = propertyToSearch.GetValue(person);
 
                 if (fieldValue == null)
                     return false;
 
-                if (fieldValue is String && searchValue is String)
-                    return ((String)fieldValue).Contains((String)searchValue, StringComparison.OrdinalIgnoreCase);
-                else
-                    return fieldValue == searchValue;
-            })
-            .ToList();
+                bool defaultCompare() => fieldValue == searchValue;
+
+                return fieldValue switch
+                {
+                    string fieldString => searchValue is string searchString
+                        ? fieldString.Contains(searchString)
+                        : defaultCompare(),
+
+                    DateTime fieldDate => searchValue is string searchString
+                        ? fieldDate.Date.CompareTo(DateTime.Parse(searchString)) == 0
+                        : defaultCompare(),
+
+                    _ => defaultCompare(),
+                };
+            }),
+        ];
     }
 
     public List<PersonResponse> GetSortedPersons(

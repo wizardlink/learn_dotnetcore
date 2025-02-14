@@ -33,7 +33,7 @@ public interface IPersonService
     /// <returns>
     /// All matching <see cref="PersonResponse" /> based on the given search field and search string.
     /// </returns>
-    public List<PersonResponse> GetFilteredPersons(string searchBy, object? searchValue);
+    public List<PersonResponse> GetFilteredPersons(string? searchBy, object? searchValue);
 
     /// <summary>
     /// Returns sorted list of <see cref="PersonResponse"/>

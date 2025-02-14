@@ -1,0 +1,132 @@
+@model IEnumerable<PersonResponse>
+@{
+    ViewBag.Title = "Persons";
+    SortOrderOptions sortFieldOrder = ViewBag.CurrentSortOrder == SortOrderOptions.DESC
+        ? SortOrderOptions.ASC
+        : SortOrderOptions.DESC;
+
+    string sortIcon = sortFieldOrder switch
+    {
+        SortOrderOptions.ASC => "fa-sort-up",
+        SortOrderOptions.DESC => "fa-sort-down",
+        _ => "fa-sort-up",
+    };
+
+    string SortLink(string sortBy)
+        =>
+        $"../persons/index?searchBy={ViewBag.CurrentSearchBy}&searchString={ViewBag.CurrentSearchString}&sortBy={sortBy}&sortOrder={sortFieldOrder}";
+
+    bool isSorted(string sortBy) => ViewBag.CurrentSortBy == sortBy;
+
+    void RenderSortLink(string fieldName, string prettyName)
+    {
+        <a href="@SortLink(fieldName)">@prettyName</a>
+
+        if (isSorted(fieldName))
+        {
+            <i class="fa-solid @sortIcon"></i>
+        }
+    }
+}
+
+<form action="~/persons/index" method="get">
+    <h1>Persons</h1>
+
+    <a href="~/persons/create">Create Person</a>
+
+    <div class="box flex">
+        <div class="flex-1">
+            <select class="form-input" name="searchBy">
+                @foreach (var field in (Dictionary<string, string>)ViewBag.SearchFields)
+                {
+                    if (field.Key == ViewBag.CurrentSearchBy)
+                    {
+                        <option value="@field.Key" selected>@field.Value</option>
+                    }
+                    else
+                    {
+                        <option value="@field.Key">@field.Value</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="flex-1">
+            <input
+                type="search"
+                id="Search"
+                class="form-input"
+                placeholder="Search"
+                name="searchString"
+                value="@ViewBag.CurrentSearchString" />
+        </div>
+
+        <div class="flex-1">
+            <button class="button button-blue-black">Search</button>
+            <a href="~/persons/index" class="link-hover">Clear</a>
+        </div>
+    </div>
+
+    <table class="table w-100 mt">
+        <thead>
+            <tr>
+                <th>
+                    @{
+                        RenderSortLink(nameof(PersonResponse.PersonName), "Person name");
+                    }
+                </th>
+                <th>
+                    @{
+                        RenderSortLink(nameof(PersonResponse.Email), "Email");
+                    }
+                </th>
+                <th>
+                    @{
+                        RenderSortLink(nameof(PersonResponse.DateOfBirth), "Date of Birth");
+                    }
+                </th>
+                <th>
+                    @{
+                        RenderSortLink(nameof(PersonResponse.Age), "Age");
+                    }
+                </th>
+                <th>
+                    @{
+                        RenderSortLink(nameof(PersonResponse.Gender), "Gender");
+                    }
+                </th>
+                <th>
+                    @{
+                        RenderSortLink(nameof(PersonResponse.Country), "Country");
+                    }
+                </th>
+                <th>
+                    @{
+                        RenderSortLink(nameof(PersonResponse.Address), "Address");
+                    }
+                </th>
+                <th>
+                    @{
+                        RenderSortLink(nameof(PersonResponse.ReceiveNewsLetters), "Receive Newsletter");
+                    }
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (PersonResponse person in Model)
+            {
+                <tr>
+                    <td>@person.PersonName</td>
+                    <td>@person.Email</td>
+                    <td>@person.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+                    <td>@person.Age</td>
+                    <td>@person.Gender</td>
+                    <td>@person.Country</td>
+                    <td>@person.Address</td>
+                    <td>@person.ReceiveNewsLetters</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
