@@ -1,0 +1,40 @@
+@model StockTrade
+
+@{
+    ViewBag.Title = "Trade";
+}
+
+<span id="finnhub-token">@ViewBag.FinnhubToken</span>
+
+<div id="stock-info">
+    <div class="grid">
+        <div>
+            <span class="stock-name">@Model.StockName</span>
+            (<span class="stock-symbol">@Model.StockSymbol</span>)
+        </div>
+
+        <div>
+            <span class="dollar-sign">$</span> <span id="stock-price">@Model.Price</span>
+        </div>
+    </div>
+
+    <span id="separator"></span>
+
+    <div class="flex-column" style="gap: 15px;">
+        <h3 style="margin-bottom: 0;">New Order</h3>
+
+        <div class="flex-column">
+            <label for="order-quantity">Quantity:</label>
+            <input type="number" name="order-quantity" value="" placeholder="0">
+        </div>
+
+        <div>
+            <button type="button" class="sell-button">↓ Sell</button>
+            <button type="button" class="buy-button">↑ Buy</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/scripts/trade.js"></script>
+}
