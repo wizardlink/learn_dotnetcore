@@ -29,10 +29,10 @@
     }
 }
 
-<form action="~/persons/index" method="get">
+<form asp-controller="Persons" asp-action="Index" method="get">
     <h1>Persons</h1>
 
-    <a href="~/persons/create">Create Person</a>
+    <a asp-controller="Persons" asp-action="Create">Create Person</a>
 
     <div class="box flex">
         <div class="flex-1">
@@ -63,7 +63,7 @@
 
         <div class="flex-1">
             <button class="button button-blue-black">Search</button>
-            <a href="~/persons/index" class="link-hover">Clear</a>
+            <a asp-controller="Persons" asp-action="Index" class="link-hover">Clear</a>
         </div>
     </div>
 
@@ -110,6 +110,8 @@
                         RenderSortLink(nameof(PersonResponse.ReceiveNewsLetters), "Receive Newsletter");
                     }
                 </th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
 
@@ -125,6 +127,12 @@
                     <td>@person.Country</td>
                     <td>@person.Address</td>
                     <td>@person.ReceiveNewsLetters</td>
+                    <td>
+                        <a asp-controller="Persons" asp-action="Edit" asp-route-personId="@person.PersonID">Edit</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Persons" asp-action="Delete" asp-route-personId="@person.PersonID">Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>

@@ -78,6 +78,7 @@ public class PersonResponse
     {
         return new PersonUpdateRequest()
         {
+            PersonName = PersonName,
             PersonID = PersonID,
             Email = Email,
             DateOfBirth = DateOfBirth,

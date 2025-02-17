@@ -15,7 +15,7 @@
     <div class="container">
         <div class="navbar">
             <div class="navbar-brand">
-                CRUD Demo
+                <img src="~/wallhaven-g8elle.png" asp-append-version="true" width="50px" alt="BSOD">
             </div>
 
             <ul>
@@ -29,6 +29,8 @@
     <div class="page-content">
         @RenderBody()
     </div>
+
+    @RenderSection("Scripts", required: false)
 </body>
 
 </html>

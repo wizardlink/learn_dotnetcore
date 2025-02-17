@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -57,7 +58,12 @@ public class PersonsController : Controller
     [HttpGet]
     public ActionResult Create()
     {
-        ViewBag.Countries = _countriesService.GetAllCountries();
+        ViewBag.Countries = _countriesService
+            .GetAllCountries()
+            .Select(country =>
+            {
+                return new SelectListItem() { Text = country.CountryName, Value = country.CountryID.ToString() };
+            });
 
         return View();
     }
@@ -68,7 +74,12 @@ public class PersonsController : Controller
     {
         if (!ModelState.IsValid)
         {
-            ViewBag.Countries = _countriesService.GetAllCountries();
+            ViewBag.Countries = _countriesService
+                .GetAllCountries()
+                .Select(country =>
+                {
+                    return new SelectListItem() { Text = country.CountryName, Value = country.CountryID.ToString() };
+                });
             ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).SelectMany(e => e.ErrorMessage).ToList();
             return View();
         }
@@ -76,5 +87,74 @@ public class PersonsController : Controller
         _personService.AddPerson(personAddRequest);
 
         return RedirectToAction("Index", "Persons");
+    }
+
+    [HttpGet]
+    [Route("[action]/{personId}")]
+    public ActionResult Edit(Guid personId)
+    {
+        var person = _personService.GetPersonById(personId);
+
+        if (person == null)
+            return RedirectToAction("Index");
+
+        ViewBag.Countries = _countriesService
+            .GetAllCountries()
+            .Select(country =>
+            {
+                return new SelectListItem() { Text = country.CountryName, Value = country.CountryID.ToString() };
+            });
+
+        PersonUpdateRequest updateRequest = person.ToPersonUpdateRequest();
+        return View(updateRequest);
+    }
+
+    [HttpPost]
+    [Route("[action]/{personId}")]
+    public ActionResult Edit(Guid personId, PersonUpdateRequest updateRequest)
+    {
+        var person = _personService.GetPersonById(updateRequest.PersonID);
+        if (person == null)
+            return RedirectToAction("Index");
+
+        if (ModelState.IsValid)
+        {
+            _personService.UpdatePerson(updateRequest);
+            return RedirectToAction("Index");
+        }
+        else
+        {
+            ViewBag.Countries = _countriesService
+                .GetAllCountries()
+                .Select(country =>
+                {
+                    return new SelectListItem() { Text = country.CountryName, Value = country.CountryID.ToString() };
+                });
+            ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).SelectMany(e => e.ErrorMessage).ToList();
+            return View(person.ToPersonUpdateRequest());
+        }
+    }
+
+    [HttpGet]
+    [Route("[action]/{personId}")]
+    public ActionResult Delete(Guid personId)
+    {
+        var person = _personService.GetPersonById(personId);
+        if (person == null)
+            return RedirectToAction("Index");
+
+        return View(person);
+    }
+
+    [HttpPost]
+    [Route("[action]/{personId}")]
+    public ActionResult Delete(Guid personId, PersonUpdateRequest updateRequest)
+    {
+        var person = _personService.GetPersonById(updateRequest.PersonID);
+
+        if (person != null)
+            _personService.DeletePerson(updateRequest.PersonID);
+
+        return RedirectToAction("Index");
     }
 }
