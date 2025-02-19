@@ -1,0 +1,52 @@
+[
+    {
+        "PersonID": "9E5F189A-D9A3-4A93-811F-4CEB06672A6C",
+        "PersonName": "Aguste",
+        "Email": "alledy@hello.com",
+        "DateOfBirth": "1993-01-02",
+        "Gender": "Male",
+        "Address": "Novick Terrace",
+        "ReceiveNewsLetters": false,
+        "CountryID": "CCBE8E62-6081-4072-B36D-FA7987D50000"
+    },
+    {
+        "PersonID": "0C4D0EF3-99A3-4FF7-97F4-E9E34296FA4C",
+        "PersonName": "Jasmina",
+        "Email": "jasmina@hello.com",
+        "DateOfBirth": "1991-06-24",
+        "Gender": "Female",
+        "Address": "Fieldstone Lane",
+        "ReceiveNewsLetters": false,
+        "CountryID": "CCBE8E62-6081-4072-B36D-FA7987D50000"
+    },
+    {
+        "PersonID": "E983E477-1CAE-4567-8842-7C1F2928D6E2",
+        "PersonName": "Kendall",
+        "Email": "kendall@hello.com",
+        "DateOfBirth": "1993-08-13",
+        "Gender": "Male",
+        "Address": "Pawling Alley",
+        "ReceiveNewsLetters": false,
+        "CountryID": "CCBE8E62-6081-4072-B36D-FA7987D50000"
+    },
+    {
+        "PersonID": "FFDFD955-98B5-4F04-A312-0F36A4C9B7C7",
+        "PersonName": "Kilian",
+        "Email": "kilian@hello.com",
+        "DateOfBirth": "1991-06-17",
+        "Gender": "Male",
+        "Address": "Buhler Junction",
+        "ReceiveNewsLetters": true,
+        "CountryID": "CCBE8E62-6081-4072-B36D-FA7987D50000"
+    },
+    {
+        "PersonID": "CCBE8E62-6081-4072-B36D-FA7987D50000",
+        "PersonName": "Dulcinea",
+        "Email": "dbus@hello.com",
+        "DateOfBirth": "1996-09-02",
+        "Gender": "Female",
+        "Address": "Sundown Point",
+        "ReceiveNewsLetters": false,
+        "CountryID": "CCBE8E62-6081-4072-B36D-FA7987D50000"
+    }
+]

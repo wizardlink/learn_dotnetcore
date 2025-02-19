@@ -113,6 +113,7 @@ public static class PersonExtensions
                 person.DateOfBirth != null
                     ? Math.Round(((TimeSpan)(DateTime.Now - person.DateOfBirth)).TotalDays / 365.25)
                     : null,
+            Country = person.Country?.CountryName,
         };
     }
 }

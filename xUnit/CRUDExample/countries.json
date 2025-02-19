@@ -1,0 +1,22 @@
+[
+    {
+        "CountryID": "CCBE8E62-6081-4072-B36D-FA7987D50000",
+        "CountryName": "USA"
+    },
+    {
+        "CountryID": "ABBCA825-C334-4416-9BF3-64356F60CCD6",
+        "CountryName": "Canada"
+    },
+    {
+        "CountryID": "C01D8E8D-F6E8-404A-9C74-FCF869BE2F16",
+        "CountryName": "UK"
+    },
+    {
+        "CountryID": "1D7BA475-B6D1-49A2-AF19-145C47BDD03F",
+        "CountryName": "India"
+    },
+    {
+        "CountryID": "29A38F00-C0C4-4359-876C-078EC8617CF7",
+        "CountryName": "Australia"
+    }
+]

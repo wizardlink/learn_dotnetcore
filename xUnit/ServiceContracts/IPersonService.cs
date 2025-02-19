@@ -13,17 +13,17 @@ public interface IPersonService
     /// </summary>
     /// <param name="addRequest">Person to add</param>
     /// <returns>Returns the same person details, along with the newly generated PersonID</returns>
-    public PersonResponse AddPerson(PersonAddRequest? addRequest);
+    public Task<PersonResponse> AddPerson(PersonAddRequest? addRequest);
 
     /// <returns>Returns a list of objects of <see cref="PersonResponse" /></returns>
-    public List<PersonResponse> GetAllPersons();
+    public Task<List<PersonResponse>> GetAllPersons();
 
     /// <summary>
     /// Returns the person object based on the given person ID
     /// </summary>
     /// <param name="personID">Person ID to search</param>
     /// <returns>Returns matchin person object</returns>
-    public PersonResponse? GetPersonById(Guid? personID);
+    public Task<PersonResponse?> GetPersonById(Guid? personID);
 
     /// <summary>
     /// Returns all <see cref="PersonResponse" /> objects that matches with the given search field and search string.
@@ -33,7 +33,7 @@ public interface IPersonService
     /// <returns>
     /// All matching <see cref="PersonResponse" /> based on the given search field and search string.
     /// </returns>
-    public List<PersonResponse> GetFilteredPersons(string? searchBy, object? searchValue);
+    public Task<List<PersonResponse>> GetFilteredPersons(string? searchBy, object? searchValue);
 
     /// <summary>
     /// Returns sorted list of <see cref="PersonResponse"/>
@@ -53,12 +53,12 @@ public interface IPersonService
     /// </summary>
     /// <param name="request">The data to be updated</param>
     /// <returns>Returns <see cref="PersonResponse" /></returns>
-    public PersonResponse UpdatePerson(PersonUpdateRequest? request);
+    public Task<PersonResponse> UpdatePerson(PersonUpdateRequest? request);
 
     /// <summary>
     /// Deletes a person based on the given <see cref="Entities.Person.PersonID"/>
     /// </summary>
     /// <param name="personID">The ID of the person to be deleted</param>
     /// <returns>Returns true when deleted, otherwise false</returns>
-    public bool DeletePerson(Guid? personID);
+    public Task<bool> DeletePerson(Guid? personID);
 }
