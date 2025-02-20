@@ -1,0 +1,126 @@
+nav {
+    margin: 35px 0;
+}
+
+nav a {
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+nav a.active {
+    border-bottom: 2px solid #8b8b8b;
+}
+
+input {
+    border-color: #8b8b8b;
+    border-radius: 30px;
+    border-width: 1px;
+    padding: 5px;
+}
+
+input[name="order-quantity"] {
+    width: 60px;
+}
+
+button {
+    border-radius: 35px;
+    border-width: 0;
+    aspect-ratio: 2 / 1;
+    width: 80px;
+    margin: 0px 5px;
+}
+
+button:hover {
+    border-width: 2px;
+    border-color: aqua;
+}
+
+#finnhub-token {
+    display: none;
+}
+
+#stock-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 50px;
+    background-color: #dfdfdf;
+    padding: 20px 50px;
+}
+
+#separator {
+    height: 60px;
+    width: 2px;
+    background-color: #8b8b8b;
+
+    margin: 0 auto;
+}
+
+#orders {
+    width: 100dvw;
+    display: flex;
+    flex-direction: row;
+}
+
+#orders > div {
+    border-radius: 10px;
+    border: solid 2px #808080;
+    margin: 0 35px;
+    padding: 15px;
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.header div:last-child {
+    margin-left: auto;
+}
+
+.grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.dollar-sign {
+    color: #808080;
+    margin-right: 5px;
+}
+
+.stock-name,
+.stock-symbol {
+    color: blue;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.sell-button {
+    background-color: red;
+}
+
+.buy-button {
+    background-color: green;
+}
+
+.grey {
+    color: #808080;
+}
+
+.order-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.order-list > .item {
+    border-bottom: solid 3px #3f3f3f;
+    width: 100%;
+}
