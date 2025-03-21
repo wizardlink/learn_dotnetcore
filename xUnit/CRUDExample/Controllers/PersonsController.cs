@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Rotativa.AspNetCore;
-using Rotativa.AspNetCore.Options;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -79,7 +77,7 @@ public class PersonsController : Controller
                 return new SelectListItem() { Text = country.CountryName, Value = country.CountryID.ToString() };
             });
             ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).SelectMany(e => e.ErrorMessage).ToList();
-            return View();
+            return View(personAddRequest);
         }
 
         await _personService.AddPerson(personAddRequest);
@@ -150,23 +148,5 @@ public class PersonsController : Controller
             await _personService.DeletePerson(updateRequest.PersonID);
 
         return RedirectToAction("Index");
-    }
-
-    [Route("[action]")]
-    public async Task<ActionResult> PDF()
-    {
-        var persons = await _personService.GetAllPersons();
-
-        return new ViewAsPdf(persons, ViewData)
-        {
-            PageMargins = new Margins()
-            {
-                Bottom = 20,
-                Left = 20,
-                Right = 20,
-                Top = 20,
-            },
-            PageOrientation = Orientation.Landscape,
-        };
     }
 }

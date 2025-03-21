@@ -1,6 +1,7 @@
 using Entities;
 using Microsoft.EntityFrameworkCore;
-using Rotativa.AspNetCore;
+using Repositories;
+using RepositoryContracts;
 using ServiceContracts;
 using Services;
 
@@ -11,14 +12,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICountriesService, CountriesService>();
 builder.Services.AddScoped<IPersonService, PersonsService>();
 
-builder.Services.AddDbContext<PersonsDbContext>(options =>
+builder.Services.AddScoped<IPersonsRepository, PersonsRepository>();
+builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultDatabase"));
 });
 
 var app = builder.Build();
-
-RotativaConfiguration.Setup("wwwroot", "wkhtmltopdf/bin");
 
 if (builder.Environment.IsDevelopment())
 {
@@ -30,3 +32,5 @@ app.UseRouting();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

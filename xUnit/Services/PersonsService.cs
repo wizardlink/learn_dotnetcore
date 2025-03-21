@@ -1,6 +1,7 @@
 using System.Reflection;
 using Entities;
-using Microsoft.EntityFrameworkCore;
+using Repositories;
+using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -10,12 +11,12 @@ namespace Services;
 
 public class PersonsService : IPersonService
 {
-    private readonly PersonsDbContext _database;
+    private readonly IPersonsRepository _repository;
     private readonly ICountriesService _countriesService;
 
-    public PersonsService(PersonsDbContext personsDbContext, ICountriesService countriesService)
+    public PersonsService(IPersonsRepository personsRepository, ICountriesService countriesService)
     {
-        _database = personsDbContext;
+        _repository = personsRepository;
         _countriesService = countriesService;
     }
 
@@ -30,25 +31,22 @@ public class PersonsService : IPersonService
 
         person.PersonID = Guid.NewGuid();
 
-        _database.Persons.Add(person);
-        await _database.SaveChangesAsync();
+        await _repository.AddPerson(person);
 
         return person.ToPersonResponse();
     }
 
-    public Task<List<PersonResponse>> GetAllPersons()
+    public async Task<List<PersonResponse>> GetAllPersons()
     {
-        return _database.Persons.Include("Country").Select(person => person.ToPersonResponse()).ToListAsync();
+        return [.. (await _repository.GetAllPersons()).Select(person => person.ToPersonResponse())];
     }
 
     public async Task<PersonResponse?> GetPersonById(Guid? personID)
     {
-        if (personID == null)
+        if (!personID.HasValue)
             return null;
 
-        Person? person = await _database
-            .Persons.Include("Country")
-            .FirstOrDefaultAsync(person => person.PersonID == personID);
+        Person? person = await _repository.GetPersonByPersonID(personID.Value);
 
         if (person == null)
             return null;
@@ -132,7 +130,7 @@ public class PersonsService : IPersonService
 
         ValidationHelper.ModelValidation(request);
 
-        var person = await _database.Persons.FirstOrDefaultAsync(person => person.PersonID == request.PersonID);
+        var person = await _repository.GetPersonByPersonID(request.PersonID);
 
         if (person == null)
             throw new ArgumentException("Given person ID does not exists");
@@ -144,23 +142,16 @@ public class PersonsService : IPersonService
         person.Address = request.Address;
         person.Gender = request.Gender.ToString();
 
-        await _database.SaveChangesAsync();
+        await _repository.UpdatePerson(person);
 
         return person.ToPersonResponse();
     }
 
     public async Task<bool> DeletePerson(Guid? personID)
     {
-        if (personID == null)
+        if (!personID.HasValue)
             throw new ArgumentNullException(nameof(personID));
 
-        var person = await GetPersonById(personID);
-        if (person == null)
-            return false;
-
-        _database.Persons.Remove(_database.Persons.First(entry => entry.PersonID == personID));
-        _database.SaveChanges();
-
-        return true;
+        return await _repository.DeletePersonByPersonID(personID.Value);
     }
 }

@@ -17,7 +17,13 @@
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             dotnet-ef
-            dotnetCorePackages.sdk_8_0
+            (
+              with dotnetCorePackages;
+              combinePackages [
+                sdk_8_0
+                sdk_9_0
+              ]
+            )
           ];
         };
       }
