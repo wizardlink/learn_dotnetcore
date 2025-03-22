@@ -1,0 +1,44 @@
+@{
+    void NavLink(string title, string link)
+    {
+        string classes = "";
+        if (ViewBag.Title == title) classes += "active";
+
+        <a href="@link" class="@classes">@title</a>
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>@ViewBag.Title</title>
+        <link href="~/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="header">
+            <h2>Stocks</h2>
+            <div>
+                <input type="search" name="stock-symbol" value="" placeholder="Search stocks" />
+            </div>
+        </div>
+
+        <nav>
+            @{
+                NavLink("Explore", "/explore");
+            }
+            @{
+                NavLink("Trade", "/");
+            }
+            @{
+                NavLink("Orders", "/orders");
+            }
+        </nav>
+
+        @RenderBody()
+
+        <script src="~/scripts/layout.js"></script>
+        @RenderSection("Scripts", required: false)
+    </body>
+</html>

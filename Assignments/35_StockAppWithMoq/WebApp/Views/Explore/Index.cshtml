@@ -1,0 +1,37 @@
+@model List<Models.DTO.Finnhub.Stock>
+
+@{
+    ViewBag.Title = "Explore";
+}
+
+<div class="stocks">
+    <div class="grid stock-list">
+        <div class="header">
+            <span>Stocks</span>
+            <a href="~/explore?showAll=true&selectedSymbol=@ViewBag.SelectedSymbol" style="margin-left: auto;">Show all stocks</a>
+        </div>
+
+        @foreach (var stock in Model)
+        {
+            <a href="~/explore?selectedSymbol=@stock.Symbol&showAll=@ViewBag.ShowAll" class="stock-item">
+                <b>@stock.Description</b>
+                <span class="grey">(@stock.Symbol)</span>
+            </a>
+        }
+    </div>
+
+    @if (ViewBag.SelectedCompany != null && ViewBag.SelectedPrice != null)
+    {
+        <div class="grid company-info">
+            <img src="@ViewBag.SelectedCompany.Logo" style="width: 150px;" />
+
+            <h3>@ViewBag.SelectedCompany.Name (@ViewBag.SelectedSymbol)</h3>
+
+            <b>Exchange: @ViewBag.SelectedCompany.Exchange</b>
+
+            <h1><span class="dollar-sign">$</span> @ViewBag.SelectedPrice.CurrentPrice</h1>
+
+            <a class="link-button" href="~/@ViewBag.SelectedSymbol">Trade Now</a>
+        </div>
+    }
+</div>
