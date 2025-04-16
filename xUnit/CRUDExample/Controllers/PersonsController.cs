@@ -11,11 +11,17 @@ public class PersonsController : Controller
 {
     private readonly IPersonService _personService;
     private readonly ICountriesService _countriesService;
+    private readonly ILogger<PersonsController> _logger;
 
-    public PersonsController(IPersonService personService, ICountriesService countriesService)
+    public PersonsController(
+        IPersonService personService,
+        ICountriesService countriesService,
+        ILogger<PersonsController> logger
+    )
     {
         _personService = personService;
         _countriesService = countriesService;
+        _logger = logger;
     }
 
     [Route("index")]
@@ -27,6 +33,12 @@ public class PersonsController : Controller
         [FromQuery] SortOrderOptions sortOrder = SortOrderOptions.ASC
     )
     {
+        _logger.LogInformation("Index action");
+
+        _logger.LogDebug(
+            $"searchBy: {searchBy}, searchString: {searchString}, sortBy: {sortBy}, sortOrder: {sortOrder}"
+        );
+
         #region Search
         ViewBag.SearchFields = new Dictionary<string, string>()
         {

@@ -1,6 +1,6 @@
 using System.Reflection;
 using Entities;
-using Repositories;
+using Microsoft.Extensions.Logging;
 using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO;
@@ -13,11 +13,17 @@ public class PersonsService : IPersonService
 {
     private readonly IPersonsRepository _repository;
     private readonly ICountriesService _countriesService;
+    private readonly ILogger<PersonsService> _logger;
 
-    public PersonsService(IPersonsRepository personsRepository, ICountriesService countriesService)
+    public PersonsService(
+        IPersonsRepository personsRepository,
+        ICountriesService countriesService,
+        ILogger<PersonsService> logger
+    )
     {
         _repository = personsRepository;
         _countriesService = countriesService;
+        _logger = logger;
     }
 
     public async Task<PersonResponse> AddPerson(PersonAddRequest? addRequest)
@@ -38,6 +44,7 @@ public class PersonsService : IPersonService
 
     public async Task<List<PersonResponse>> GetAllPersons()
     {
+        _logger.LogInformation("GetALlPersons of PersonsService");
         return [.. (await _repository.GetAllPersons()).Select(person => person.ToPersonResponse())];
     }
 
@@ -56,6 +63,8 @@ public class PersonsService : IPersonService
 
     public async Task<List<PersonResponse>> GetFilteredPersons(string? searchBy, object? searchValue)
     {
+        _logger.LogInformation("GetFilteredPersons of PersonsService");
+
         List<PersonResponse> allPersons = await GetAllPersons();
 
         if (string.IsNullOrEmpty(searchBy))
@@ -99,6 +108,8 @@ public class PersonsService : IPersonService
         SortOrderOptions sortOptions
     )
     {
+        _logger.LogInformation("GetSortedPersons of PersonsService");
+
         if (string.IsNullOrEmpty(sortBy))
             return allPersons;
 
