@@ -1,0 +1,44 @@
+@model Orders
+@using Models.DTO.Order;
+
+@{
+    ViewBag.Title = "Orders";
+
+    void RenderItem(BaseResponse response)
+    {
+        <div class="item">
+            <h3>@response.StockName (@response.StockSymbol)</h3>
+            <p>
+                <b>@response.Quantity</b> shares at <b>@response.Price</b>
+            </p>
+            <p>
+                Trade amount: <b>$@(response.Quantity * response.Price)</b>
+            </p>
+            <span>@response.DateAndTimeOfOrder.ToString("dd MMMM yyyy HH:mm:ss")</span>
+        </div>
+    }
+}
+
+<section id="orders">
+    <div>
+        <span class="grey">Buy Orders</span>
+
+        <div class="order-list">
+            @foreach (var buyResponse in Model.BuyResponses)
+            {
+                RenderItem(buyResponse);
+            }
+        </div>
+    </div>
+
+    <div>
+        <span class="grey">Sell Orders</span>
+
+        <div class="order-list">
+            @foreach (var sellResponse in Model.SellResponses)
+            {
+                RenderItem(sellResponse);
+            }
+        </div>
+    </div>
+</section>
