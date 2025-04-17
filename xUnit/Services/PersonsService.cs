@@ -2,6 +2,8 @@ using System.Reflection;
 using Entities;
 using Microsoft.Extensions.Logging;
 using RepositoryContracts;
+using Serilog;
+using SerilogTimings;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -14,16 +16,19 @@ public class PersonsService : IPersonService
     private readonly IPersonsRepository _repository;
     private readonly ICountriesService _countriesService;
     private readonly ILogger<PersonsService> _logger;
+    private readonly IDiagnosticContext _diagnosticContext;
 
     public PersonsService(
         IPersonsRepository personsRepository,
         ICountriesService countriesService,
-        ILogger<PersonsService> logger
+        ILogger<PersonsService> logger,
+        IDiagnosticContext diagnosticContext
     )
     {
         _repository = personsRepository;
         _countriesService = countriesService;
         _logger = logger;
+        _diagnosticContext = diagnosticContext;
     }
 
     public async Task<PersonResponse> AddPerson(PersonAddRequest? addRequest)
@@ -64,42 +69,49 @@ public class PersonsService : IPersonService
     public async Task<List<PersonResponse>> GetFilteredPersons(string? searchBy, object? searchValue)
     {
         _logger.LogInformation("GetFilteredPersons of PersonsService");
+        List<PersonResponse> filteredPeople = [];
 
-        List<PersonResponse> allPersons = await GetAllPersons();
+        using (Operation.Time("Time for GetFilteredPersons"))
+        {
+            List<PersonResponse> allPersons = await GetAllPersons();
 
-        if (string.IsNullOrEmpty(searchBy))
-            return allPersons;
+            if (string.IsNullOrEmpty(searchBy))
+                return allPersons;
 
-        var propertyToSearch = typeof(PersonResponse).GetTypeInfo().GetProperty(searchBy);
+            var propertyToSearch =
+                typeof(PersonResponse).GetTypeInfo().GetProperty(searchBy)
+                ?? throw new ArgumentException("searchBy does not matches any fields from type PersonResponse");
 
-        if (propertyToSearch == null)
-            throw new ArgumentException("searchBy does not matches any fields from type PersonResponse");
-
-        return
-        [
-            .. allPersons.Where(person =>
-            {
-                var fieldValue = propertyToSearch.GetValue(person);
-
-                if (fieldValue == null)
-                    return false;
-
-                bool defaultCompare() => fieldValue == searchValue;
-
-                return fieldValue switch
+            filteredPeople =
+            [
+                .. allPersons.Where(person =>
                 {
-                    string fieldString => searchValue is string searchString
-                        ? fieldString.Contains(searchString)
-                        : defaultCompare(),
+                    var fieldValue = propertyToSearch.GetValue(person);
 
-                    DateTime fieldDate => searchValue is string searchString
-                        ? fieldDate.Date.CompareTo(DateTime.Parse(searchString)) == 0
-                        : defaultCompare(),
+                    if (fieldValue == null)
+                        return false;
 
-                    _ => defaultCompare(),
-                };
-            }),
-        ];
+                    bool defaultCompare() => fieldValue == searchValue;
+
+                    return fieldValue switch
+                    {
+                        string fieldString => searchValue is string searchString
+                            ? fieldString.Contains(searchString)
+                            : defaultCompare(),
+
+                        DateTime fieldDate => searchValue is string searchString
+                            ? fieldDate.Date.CompareTo(DateTime.Parse(searchString)) == 0
+                            : defaultCompare(),
+
+                        _ => defaultCompare(),
+                    };
+                }),
+            ];
+        }
+
+        _diagnosticContext.Set("People", filteredPeople);
+
+        return filteredPeople;
     }
 
     public List<PersonResponse> GetSortedPersons(

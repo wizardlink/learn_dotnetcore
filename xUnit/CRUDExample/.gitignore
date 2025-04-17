@@ -1,2 +1,5 @@
 # Ignore SQLite database file
 database.dat*
+
+# Ignore Serilog logs
+logs/
