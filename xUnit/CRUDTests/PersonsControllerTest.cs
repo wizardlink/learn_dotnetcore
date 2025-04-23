@@ -2,6 +2,7 @@ using AutoFixture;
 using CRUDExample.Controllers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using ServiceContracts;
 using ServiceContracts.DTO;
@@ -15,9 +16,11 @@ public class PersonsControllerTest
 
     private readonly Mock<IPersonService> _mockPersons;
     private readonly Mock<ICountriesService> _mockCountries;
+    private readonly Mock<ILogger<PersonsController>> _mockLogger;
 
     private readonly IPersonService _personsService;
     private readonly ICountriesService _countriesService;
+    private readonly ILogger<PersonsController> _logger;
 
     public PersonsControllerTest()
     {
@@ -25,9 +28,11 @@ public class PersonsControllerTest
 
         _mockPersons = new Mock<IPersonService>();
         _mockCountries = new Mock<ICountriesService>();
+        _mockLogger = new Mock<ILogger<PersonsController>>();
 
         _personsService = _mockPersons.Object;
         _countriesService = _mockCountries.Object;
+        _logger = _mockLogger.Object;
     }
 
     #region Index
@@ -36,7 +41,7 @@ public class PersonsControllerTest
     {
         List<PersonResponse> personResponses = _fixture.Create<List<PersonResponse>>();
 
-        PersonsController personsController = new(_personsService, _countriesService);
+        PersonsController personsController = new(_personsService, _countriesService, _logger);
 
         _mockPersons
             .Setup(service => service.GetFilteredPersons(It.IsAny<string>(), It.IsAny<string>()))
@@ -80,14 +85,14 @@ public class PersonsControllerTest
 
         _mockCountries.Setup(service => service.GetAllCountries()).ReturnsAsync(countryResponses);
 
-        PersonsController personsController = new(_personsService, _countriesService);
+        PersonsController personsController = new(_personsService, _countriesService, _logger);
 
         // Forcibly create a model error
         personsController.ModelState.AddModelError("PersonName", "Person Name cannot be blank.");
 
         var actionResult = await personsController.Create(addRequest);
 
-        actionResult.Should().BeOfType<ViewResult>();
+        actionResult.Should().BeOfType<RedirectToActionResult>();
 
         var viewData = ((ViewResult)actionResult).ViewData;
 
@@ -106,7 +111,7 @@ public class PersonsControllerTest
 
         _mockPersons.Setup(service => service.AddPerson(It.IsAny<PersonAddRequest>())).ReturnsAsync(response);
 
-        PersonsController personsController = new(_personsService, _countriesService);
+        PersonsController personsController = new(_personsService, _countriesService, _logger);
 
         var actionResult = await personsController.Create(addRequest);
 

@@ -3,8 +3,10 @@ using Entities;
 using EntityFrameworkCoreMock;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using RepositoryContracts;
+using Serilog.Extensions.Hosting;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -16,18 +18,31 @@ namespace CRUDTests;
 public class PersonsServiceTest
 {
     private readonly Fixture _fixture;
-    private readonly ICountriesService _countriesService;
-    private readonly IPersonsRepository _repository;
+
     private readonly Mock<IPersonsRepository> _mock;
-    private readonly ITestOutputHelper _testOutputHelper;
+    private readonly Mock<ILogger<PersonsService>> _mockLogger;
+    private readonly Mock<DiagnosticContext> _mockDiagnosticContext;
+
+    private readonly IPersonsRepository _repository;
+    private readonly ILogger<PersonsService> _logger;
+    private readonly DiagnosticContext _diagnosticContext;
+
+    private readonly ICountriesService _countriesService;
     private readonly PersonsService _personService;
+
+    private readonly ITestOutputHelper _testOutputHelper;
 
     public PersonsServiceTest(ITestOutputHelper testOutputHelper)
     {
         _fixture = new Fixture();
 
         _mock = new();
+        _mockLogger = new Mock<ILogger<PersonsService>>();
+        _mockDiagnosticContext = new Mock<DiagnosticContext>();
+
         _repository = _mock.Object;
+        _logger = _mockLogger.Object;
+        _diagnosticContext = _mockDiagnosticContext.Object;
 
         DbContextMock<ApplicationDbContext> dbContextMock = new(
             new DbContextOptionsBuilder<ApplicationDbContext>().Options
@@ -39,7 +54,7 @@ public class PersonsServiceTest
         dbContextMock.CreateDbSetMock(db => db.Persons, []);
 
         _countriesService = new CountriesService(null);
-        _personService = new PersonsService(_repository, _countriesService);
+        _personService = new PersonsService(_repository, _countriesService, _logger, _diagnosticContext);
 
         _testOutputHelper = testOutputHelper;
     }

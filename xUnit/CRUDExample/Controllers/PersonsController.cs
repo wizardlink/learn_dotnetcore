@@ -14,6 +14,7 @@ namespace CRUDExample.Controllers;
 
 [Route("persons")]
 [TypeFilter<HandleExceptionFilter>()]
+[ResponseHeaderFilterFactory("My-Key-From-Controller", "My-Value-From-Controller")]
 public class PersonsController : Controller
 {
     private readonly IPersonService _personService;
@@ -34,7 +35,7 @@ public class PersonsController : Controller
     [Route("index")]
     [Route("/")]
     [ServiceFilter(typeof(PersonsListActionFilter))]
-    [ResponseHeaderActionFilter("X-Custom-Key", "Custom-Value")]
+    [ResponseHeaderFilterFactory("X-Custom-Key", "Custom-Value")]
     [TypeFilter<PersonsListResultFilter>()]
     [SkipFilter]
     public async Task<ActionResult> Index(

@@ -13,21 +13,41 @@
 
 <body>
     <div class="container">
-        <div class="navbar">
-            <div class="navbar-brand">
-                <img src="~/wallhaven-g8elle.png" asp-append-version="true" width="50px" alt="BSOD">
+        <div class="page-content">
+            <div class="margin-bottom">
+                <div id="top-bar-div" class="flex">
+                    <div id="app-title-div" class="flex-1">
+                        <h1 class="app-title">
+                            <i class="fa-solid fa-people-simple"></i>
+                            Contact Manager
+                        </h1>
+                    </div>
+
+                    <div id="search-box-div" class="flex-1 pr">
+                        <div class="navbar account-links">
+                            <ul>
+                                <li>
+                                    <a asp-controller="Account" asp-action="Register">Register</a>
+                                    <a asp-controller="Account" asp-action="Login">Login</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <ul>
-                <li>
-                    <a href="~/persons/index">Persons</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+            <div class="navbar mb">
+                <ul>
+                    <li>
+                        <a asp-controller="Persons" asp-action="Index">Persons</a>
+                    </li>
+                </ul>
+            </div>
 
-    <div class="page-content">
-        @RenderBody()
+            <div class="body">
+                @RenderBody()
+            </div>
+        </div>
     </div>
 
     @RenderSection("Scripts", required: false)

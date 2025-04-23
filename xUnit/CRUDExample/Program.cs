@@ -1,4 +1,5 @@
 using CRUDExample.Filters.ActionFilters;
+using CRUDExample.StartupExtensions;
 using Entities;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,8 @@ try
     Log.Information("Starting web application");
 
     var builder = WebApplication.CreateBuilder(args);
+
+    builder.ConfigureServices();
 
     builder.Services.AddSerilog(
         (services, lc) =>
