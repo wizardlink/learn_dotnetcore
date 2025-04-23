@@ -1,3 +1,4 @@
+using CRUDExample.Filters.ActionFilters;
 using Entities;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
@@ -18,15 +19,18 @@ try
     builder.Services.AddSerilog(
         (services, lc) =>
             lc
+                .MinimumLevel.Information()
                 .ReadFrom.Configuration(builder.Configuration)
                 .ReadFrom.Services(services)
                 .Enrich.FromLogContext()
                 .Enrich.WithProperty("ApplicationName", "CRUD Demo App")
-                .WriteTo.Console()
-                .WriteTo.SQLite(Environment.CurrentDirectory + @"/logs/log.db")
+                .WriteTo.Console() //.WriteTo.SQLite(Environment.CurrentDirectory + @"/logs/log.db")
     );
 
-    builder.Services.AddControllersWithViews();
+    builder.Services.AddControllersWithViews(options =>
+    {
+        options.Filters.Add<ResponseHeaderActionFilter.Global>();
+    });
 
     builder.Services.AddScoped<ICountriesService, CountriesService>();
     builder.Services.AddScoped<IPersonService, PersonsService>();
@@ -43,6 +47,8 @@ try
     {
         options.LoggingFields = HttpLoggingFields.RequestProperties | HttpLoggingFields.ResponsePropertiesAndHeaders;
     });
+
+    builder.Services.AddTransient<PersonsListActionFilter>();
 
     var app = builder.Build();
 

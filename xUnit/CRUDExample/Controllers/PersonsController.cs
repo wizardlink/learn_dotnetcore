@@ -1,3 +1,9 @@
+using CRUDExample.Filters;
+using CRUDExample.Filters.ActionFilters;
+using CRUDExample.Filters.AuthorizationFilters;
+using CRUDExample.Filters.ExceptionFilters;
+using CRUDExample.Filters.ResourceFilters;
+using CRUDExample.Filters.ResultFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ServiceContracts;
@@ -7,6 +13,7 @@ using ServiceContracts.Enums;
 namespace CRUDExample.Controllers;
 
 [Route("persons")]
+[TypeFilter<HandleExceptionFilter>()]
 public class PersonsController : Controller
 {
     private readonly IPersonService _personService;
@@ -26,6 +33,10 @@ public class PersonsController : Controller
 
     [Route("index")]
     [Route("/")]
+    [ServiceFilter(typeof(PersonsListActionFilter))]
+    [ResponseHeaderActionFilter("X-Custom-Key", "Custom-Value")]
+    [TypeFilter<PersonsListResultFilter>()]
+    [SkipFilter]
     public async Task<ActionResult> Index(
         [FromQuery] string? searchBy,
         [FromQuery] string? searchString,
@@ -57,12 +68,6 @@ public class PersonsController : Controller
         persons = _personService.GetSortedPersons(persons, sortBy, sortOrder);
         #endregion
 
-        // Preserve inputs
-        ViewBag.CurrentSearchBy = searchBy;
-        ViewBag.CurrentSearchString = searchString;
-        ViewBag.CurrentSortBy = sortBy;
-        ViewBag.CurrentSortOrder = sortOrder;
-
         return View(persons);
     }
 
@@ -80,18 +85,10 @@ public class PersonsController : Controller
 
     [Route("create")]
     [HttpPost]
+    [TypeFilter<PersonCreateAndEditPostActionFilter>()]
+    [TypeFilter<FeatureDisabledResourceFilter>(Arguments = new object[] { false })]
     public async Task<ActionResult> Create(PersonAddRequest personAddRequest)
     {
-        if (!ModelState.IsValid)
-        {
-            ViewBag.Countries = (await _countriesService.GetAllCountries()).Select(country =>
-            {
-                return new SelectListItem() { Text = country.CountryName, Value = country.CountryID.ToString() };
-            });
-            ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).SelectMany(e => e.ErrorMessage).ToList();
-            return View(personAddRequest);
-        }
-
         await _personService.AddPerson(personAddRequest);
 
         return RedirectToAction("Index", "Persons");
@@ -99,6 +96,7 @@ public class PersonsController : Controller
 
     [HttpGet]
     [Route("[action]/{personId}")]
+    [TypeFilter<TokenResultFilter>()]
     public async Task<ActionResult> Edit(Guid personId)
     {
         var person = await _personService.GetPersonById(personId);
@@ -117,6 +115,8 @@ public class PersonsController : Controller
 
     [HttpPost]
     [Route("[action]/{personId}")]
+    [TypeFilter<TokenAuthorizationFilter>()]
+    [TypeFilter<PersonAlwaysRunResultFilter>()]
     public async Task<ActionResult> Edit(Guid personId, PersonUpdateRequest updateRequest)
     {
         var person = await _personService.GetPersonById(updateRequest.PersonID);
