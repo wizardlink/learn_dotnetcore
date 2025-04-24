@@ -1,0 +1,56 @@
+@model BaseOrder
+
+@{
+    ViewBag.Title = "Trade";
+}
+
+<span id="finnhub-token">@ViewBag.FinnhubToken</span>
+
+<form id="stock-info" method="post">
+    <div class="grid">
+        <div>
+            <span class="stock-name">@Model.StockName</span>
+            <input class="hidden" name="StockName" value="@Model.StockName" />
+
+            (<span class="stock-symbol">@Model.StockSymbol</span>)
+            <input class="hidden" name="StockSymbol" value="@Model.StockSymbol" />
+        </div>
+
+        <div>
+            <span class="dollar-sign">$</span> <span id="stock-price">@Model.Price</span>
+            <input class="hidden" name="Price" value="@Model.Price" />
+        </div>
+    </div>
+
+    <span id="separator"></span>
+
+    <div class="flex-column" style="gap: 15px;">
+        <h3 style="margin-bottom: 0;">New Order</h3>
+
+        <div class="flex-column">
+            <label for="order-quantity">Quantity:</label>
+            <input type="number" name="Quantity" value="" placeholder="0">
+        </div>
+
+        <div>
+            <button type="submit" class="sell-button" formaction="~/sellorder">↓ Sell</button>
+            <button type="submit" class="buy-button" formaction="~/buyorder">↑ Buy</button>
+
+            @if (ViewBag.Errors != null)
+            {
+                <div class="errors">
+                    <ul>
+                        @foreach (string error in ViewBag.Errors)
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script type="text/javascript" src="~/scripts/trade.js"></script>
+}
