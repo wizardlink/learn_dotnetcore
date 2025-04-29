@@ -1,13 +1,6 @@
-using CRUDExample.Filters.ActionFilters;
+using CRUDExample.Middleware;
 using CRUDExample.StartupExtensions;
-using Entities;
-using Microsoft.AspNetCore.HttpLogging;
-using Microsoft.EntityFrameworkCore;
-using Repositories;
-using RepositoryContracts;
 using Serilog;
-using ServiceContracts;
-using Services;
 
 Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateBootstrapLogger();
 
@@ -19,48 +12,15 @@ try
 
     builder.ConfigureServices();
 
-    builder.Services.AddSerilog(
-        (services, lc) =>
-            lc
-                .MinimumLevel.Information()
-                .ReadFrom.Configuration(builder.Configuration)
-                .ReadFrom.Services(services)
-                .Enrich.FromLogContext()
-                .Enrich.WithProperty("ApplicationName", "CRUD Demo App")
-                .WriteTo.Console() //.WriteTo.SQLite(Environment.CurrentDirectory + @"/logs/log.db")
-    );
-
-    builder.Services.AddControllersWithViews(options =>
-    {
-        options.Filters.Add<ResponseHeaderActionFilter.Global>();
-    });
-
-    builder.Services.AddScoped<ICountriesService, CountriesService>();
-    builder.Services.AddScoped<IPersonService, PersonsService>();
-
-    builder.Services.AddScoped<IPersonsRepository, PersonsRepository>();
-    builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
-
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    {
-        options.UseSqlite(builder.Configuration.GetConnectionString("DefaultDatabase"));
-    });
-
-    builder.Services.AddHttpLogging(options =>
-    {
-        options.LoggingFields = HttpLoggingFields.RequestProperties | HttpLoggingFields.ResponsePropertiesAndHeaders;
-    });
-
-    builder.Services.AddTransient<PersonsListActionFilter>();
-
     var app = builder.Build();
 
     app.UseSerilogRequestLogging();
 
-    if (builder.Environment.IsDevelopment())
-    {
-        app.UseDeveloperExceptionPage();
-    }
+    // if (builder.Environment.IsDevelopment())
+    //     app.UseDeveloperExceptionPage();
+    // else
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
+    app.UseExceptionHandler("/Error");
 
     // app.Logger.LogDebug("debug-message");
     // app.Logger.LogInformation("information-message");

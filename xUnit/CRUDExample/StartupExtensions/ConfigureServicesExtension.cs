@@ -1,4 +1,5 @@
 using CRUDExample.Filters.ActionFilters;
+using CRUDExample.Middleware;
 using Entities;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;

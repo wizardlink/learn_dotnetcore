@@ -1,5 +1,6 @@
 using System.Reflection;
 using Entities;
+using Exceptions;
 using Microsoft.Extensions.Logging;
 using RepositoryContracts;
 using Serilog;
@@ -156,7 +157,7 @@ public class PersonsService : IPersonService
         var person = await _repository.GetPersonByPersonID(request.PersonID);
 
         if (person == null)
-            throw new ArgumentException("Given person ID does not exists");
+            throw new InvalidPersonIDException("Given person ID does not exists");
 
         person.PersonName = request.PersonName;
         person.Email = request.Email;

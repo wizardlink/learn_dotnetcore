@@ -13,7 +13,7 @@ using ServiceContracts.Enums;
 namespace CRUDExample.Controllers;
 
 [Route("persons")]
-[TypeFilter<HandleExceptionFilter>()]
+// [TypeFilter<HandleExceptionFilter>()]
 [ResponseHeaderFilterFactory("My-Key-From-Controller", "My-Value-From-Controller")]
 public class PersonsController : Controller
 {
@@ -68,6 +68,8 @@ public class PersonsController : Controller
         #region Sort
         persons = _personService.GetSortedPersons(persons, sortBy, sortOrder);
         #endregion
+
+        throw new Exception("Hahahaha");
 
         return View(persons);
     }
