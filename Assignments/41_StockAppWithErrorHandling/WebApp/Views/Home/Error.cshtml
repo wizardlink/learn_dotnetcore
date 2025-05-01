@@ -1,0 +1,13 @@
+@model Models.View.Home.ErrorDetails;
+
+@{
+    ViewBag.Title = "Explore";
+}
+
+<div class="center">
+    <p>
+        An exception has occurred:
+        <br />
+        <span class="errors">@Model.Message</span>
+    </p>
+</div>
